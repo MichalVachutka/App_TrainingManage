@@ -1,0 +1,334 @@
+/* ──────────────────────────────────────────────────────────
+   1) Import Bootswatch Flatly
+────────────────────────────────────────────────────────── */
+@import "bootswatch/dist/flatly/bootstrap.min.css";
+
+/* ──────────────────────────────────────────────────────────
+   2) Globální proměnné a základní nastavení
+────────────────────────────────────────────────────────── */
+:root {
+  --bs-primary:    #4a90e2;
+  --bs-secondary:  #f39c12;
+  --bs-body-bg:    #fefefe;
+  --bs-body-color: #333;
+
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+/* ──────────────────────────────────────────────────────────
+   3) Odkazy, tlačítka a nadpisy
+────────────────────────────────────────────────────────── */
+a {
+  font-weight: 500;
+  color: var(--bs-primary);
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Inter', sans-serif;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: var(--bs-primary);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* ──────────────────────────────────────────────────────────
+   4) Karty a tabulky – stíny, přechody, zaoblení
+────────────────────────────────────────────────────────── */
+.card {
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 1rem;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.table {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.table thead {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.container > .card + .card,
+.container > .card + .mt-4 {
+  margin-top: 2rem;
+}
+
+/* ──────────────────────────────────────────────────────────
+   5) PersonDetail – barevné záhlaví a definice seznamu
+────────────────────────────────────────────────────────── */
+.person-header {
+  background: linear-gradient(
+    90deg,
+    var(--bs-primary) 0%,
+    var(--bs-primary) 60%,
+    var(--bs-body-color) 100%
+  );
+  color: #fff;
+}
+
+.person-dl dt {
+  font-weight: 600;
+}
+.person-dl dd {
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+.person-dl dd:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* ──────────────────────────────────────────────────────────
+   6) Karty s metrikami – zvýraznění (card-metric)
+────────────────────────────────────────────────────────── */
+.card-metric {
+  border-left: 0.25rem solid var(--bs-primary);
+  transition: background-color 0.2s;
+}
+.card-metric .card-header {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+.card-metric .card-body {
+  background-color: rgba(78, 115, 223, 0.1);
+}
+
+/* ──────────────────────────────────────────────────────────
+   7) Režim light/dark dle prefers-color-scheme
+────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────
+/* ──────────────────────────────────────────────────────────
+/* ──────────────────────────────────────────────────────────
+   TrainingDetail – gradientní záhlaví a definice seznamu
+────────────────────────────────────────────────────────── 
+────────────────────────────────────────────────────────── 
+────────────────────────────────────────────────────────── */
+
+.training-header {
+  background: linear-gradient(
+    90deg,
+    var(--bs-secondary) 0%,
+    var(--bs-body-color) 100%
+  );
+  color: #fff;
+}
+
+.training-dl dt {
+  font-weight: 600;
+}
+.training-dl dd {
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+.training-dl dd:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* trocha hover efektu pro tabulku */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+
+
+/* ──────────────────────────────────────────────────────────
+/* ──────────────────────────────────────────────────────────
+/* ──────────────────────────────────────────────────────────
+   ExpenseDetail – gradientní záhlaví a definice seznamu
+────────────────────────────────────────────────────────── 
+────────────────────────────────────────────────────────── 
+────────────────────────────────────────────────────────── */
+.expense-header {
+  background: linear-gradient(
+    90deg,
+    var(--bs-secondary) 0%,
+    var(--bs-body-color) 100%
+  );
+  color: #fff;
+}
+
+/* definice seznamu v detailu výdaje */
+.expense-dl dt {
+  font-weight: 600;
+}
+.expense-dl dd {
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+.expense-dl dd:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* hover efekt pro tabulky */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+
+
+/* ──────────────────────────────────────────────────────────
+   8) Globální button tweaks
+────────────────────────────────────────────────────────── */
+
+/* Základ pro všechny .btn */
+.btn {
+  border-radius: 0.75rem;               /* větší zaoblení */
+  padding: 0.6rem 1.2rem;               /* víc “vzduchu” */
+  font-weight: 600;                     /* tučnější text */
+  transition: 
+    transform 0.15s ease, 
+    box-shadow 0.15s ease, 
+    background-color 0.15s ease;
+}
+
+/* Mírné “vytrysknutí” při hoveru */
+.btn:hover,
+.btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Primární tlačítko */
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: #fff;
+}
+
+/* Hover a active primárního */
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #3a79c1;            /* tmavší modrá */
+  border-color: #3a79c1;
+}
+
+/* Sekundární tlačítko */
+.btn-secondary {
+  background-color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
+  color: #fff;
+}
+
+/* Hover a active sekundárního */
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: #d78f0e;            /* tmavší oranžová */
+  border-color: #d78f0e;
+}
+
+/* Malá tlačítka (změna výšky a paddingu) */
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.875rem;
+}
+
+/* Pokud používáte .btn-link – trochu kontrastu */
+.btn-link {
+  font-weight: 600;
+  color: var(--bs-primary);
+}
+.btn-link:hover, .btn-link:focus {
+  color: #3a79c1;
+  text-decoration: underline;
+}
+
+
+
+
+/* ──────────────────────────────────────────────────────────
+   Transaction history – barevné odlišení řádků podle typu
+────────────────────────────────────────────────────────── */
+/* .table-transactions tbody tr.tx-income {
+  background-color: rgba(40, 167, 69, 0.1);
+}
+.table-transactions tbody tr.tx-expense {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+.table-transactions tbody tr.tx-rent-share {
+  background-color: rgba(23, 162, 184, 0.1);
+}
+.table-transactions tbody tr.tx-equipment-share {
+  background-color: rgba(255, 193, 7, 0.1);
+} */
+ .table-transactions tr.tx-income {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-left: 4px solid #28a745;
+}
+
+.table-transactions tr.tx-expense {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-left: 4px solid #dc3545;
+}
+
+.table-transactions tr.tx-rent-share {
+  background-color: rgba(23, 162, 184, 0.1);
+  border-left: 4px solid #17a2b8;
+}
+
+.table-transactions tr.tx-equipment-share {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+}
+
+
+
+/* volitelné: pevnější oddělení mezi měsíci, pokud se rozhodneš později seskupovat */
+.table-transactions tbody tr.month-header td {
+  background-color: var(--bs-body-bg);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-top: 2px solid var(--bs-primary);
+}
+
+
+
+

@@ -1,0 +1,42 @@
+﻿# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+
+# Build
+bin/
+obj/
+**/bin/
+**/obj/
+
+# Rider / IDE
+.idea/
+
+# ASP.NET / .NET
+*.db
+appsettings.*.json
+secrets.json
+
+# Node / React
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+build/
+dist/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Misc
+*.vsix

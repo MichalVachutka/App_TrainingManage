@@ -1,0 +1,97 @@
+/* Centrování kontejneru přes full‐screen flex + animované radiální pozadí */
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top left, #d0e8f2, #f5f7fa 80%);
+  animation: bgShift 10s ease infinite alternate;
+}
+@keyframes bgShift {
+  from { background-position: 0% 0%; }
+  to   { background-position: 100% 100%; }
+}
+
+/* Styl samotného formuláře s jemným zářivým stínem */
+.auth-box {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 0 20px rgba(110,193,228,0.15);
+  text-align: center;
+  min-width: 280px;
+  max-width: 360px;
+  width: 90%;
+}
+
+/* Velikost a barva zámku */
+.auth-icon {
+  font-size: 2.5rem;
+  color: #6ec1e4;
+  margin-bottom: 1rem;
+}
+
+/* Vylepšené pole pro heslo + animované podkreslení při focus */
+.auth-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid #d1d9e6;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.auth-input::placeholder {
+  color: #a8b0be;
+}
+.auth-input:focus {
+  outline: none;
+  border-color: #6ec1e4;
+  box-shadow: 0 0 8px rgba(110,193,228,0.5);
+  animation: inputGlow 2s ease infinite alternate;
+}
+@keyframes inputGlow {
+  from { box-shadow: 0 0 2px rgba(110,193,228,0.3); }
+  to   { box-shadow: 0 0 12px rgba(110,193,228,0.7); }
+}
+
+/* Gradientní pulsující tlačítko */
+.auth-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #6ec1e4 0%, #2a6b9d 100%);
+  background-size: 200% 200%;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  animation: btnGradient 5s ease infinite;
+}
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+.auth-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+@keyframes btnGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Disabled stav, když pole prázdné */
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.auth-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}

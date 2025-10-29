@@ -1,0 +1,9 @@
+.napis {
+  position: fixed;
+  bottom: 20px;              /* vzdálenost od spodního okraje */
+  left: 50%;                 /* posun na střed horizontálně */
+  transform: translateX(-50%); /* zarovnání podle středu obrázku */
+  width: auto;               /* nebo konkrétní velikost */
+  max-width: 90%;            /* responzivní omezení šířky */
+  z-index: 10;               /* nad pozadím, ale pod obsahem pokud potřebuješ */
+}

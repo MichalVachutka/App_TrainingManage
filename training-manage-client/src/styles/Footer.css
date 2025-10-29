@@ -1,0 +1,37 @@
+.footer {
+  /* background-color: #f8f9fa; */
+  background-color: #d8d9d9;
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
+
+.footer-image {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 10px 0;
+}
+
+.social-icons .icon {
+  font-size: 1.5rem;
+  color: #444;
+  transition: color 0.3s ease;
+}
+
+.social-icons .icon:hover {
+  color: #007bff; /* modrý odstín při hoveru */
+}

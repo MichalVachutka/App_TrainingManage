@@ -1,0 +1,145 @@
+/* ======================================================
+   Filtry nahoře – flex-wrap, responzivní rozložení
+   ====================================================== */
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Tlačítka filtrovat/obnovit – centrum nad 576px */
+.person-filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 576px) {
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-controls .form-control,
+  .filter-controls .btn {
+    width: 100%;
+  }
+
+  .person-filter-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .person-filter-buttons .btn {
+    width: 100%;
+  }
+}
+
+/* ======================================================
+   Rozbalená řádka s akcemi + mobilní tlačítka
+   ====================================================== */
+.action-row td {
+  background-color: #f8f9fa;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 576px) {
+  .action-row .btn {
+    flex: 1 1 100%;
+  }
+}
+
+/* ======================================================
+   PersonDetail – Zpět/Upravit pod sebe na mobilu
+   ====================================================== */
+@media (max-width: 576px) {
+  .person-detail-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .person-detail-actions .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .person-detail-actions .btn:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ======================================================
+   Přidat novou osobu – vycentrované, full-width na mobilu
+   ====================================================== */
+@media (max-width: 576px) {
+  .person-add-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+}
+
+/* ======================================================
+   PersonForm: Zpět / Uložit vedle sebe na mobilu
+   ====================================================== */
+@media (max-width: 576px) {
+  .person-form-actions {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .person-form-actions .btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+/* ======================================================
+   Universální ikonové tlačítko — širší obdélník
+   ====================================================== */
+.icon-btn {
+  min-width: 60px;
+  height: 40px;
+  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  opacity: 0.6;
+}
+.icon-btn:hover {
+  opacity: 1;
+}
+
+/* ======================================================
+   Jemné podbarvení buněk podle typu transakce v historii
+   ====================================================== */
+.table-transactions tr.tx-income td {
+  background-color: rgba(76, 175, 80, 0.1) !important;
+}
+
+.table-transactions tr.tx-rent-share td {
+  background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.table-transactions tr.tx-equipment-share td {
+  background-color: rgba(33, 150, 243, 0.1) !important;
+}
+
+.table-transactions tr.tx-expense td {
+  background-color: rgba(244, 67, 54, 0.1) !important;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,190 @@
+/* celý kontejner s filtrem vycentruj */
+.training-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* zúž formu na max-šířku a vystřeď ji */
+.training-filter-form {
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* tlačítka: vodorovné na velkých, ve sloupci na malých */
+.training-filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* pod 576px: tlačítka pod sebe a plná šířka */
+@media (max-width: 576px) {
+  .training-filter-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .training-filter-buttons .btn {
+    width: 100%;
+  }
+}
+
+/* od 0 do 576px: vytvořit trénink – block + auto margin */
+@media (max-width: 576px) {
+  /* cílíme na přímé potomky .card-body, kteří mají třídy .btn-success.mt-3 */
+  .card-body > .btn-success.mt-3 {
+    display: block;
+    margin: 1rem auto 0;
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* detail tréninku */
+/* ========================================================================
+   Na mobilu (<576px) vycentruj a roztáhni hlavní tlačítka a uprav summary
+   ======================================================================== */
+@media (max-width: 576px) {
+  /* tlačítka “Zpět” a formulářové “Přihlásit/Přidat platbu” */
+  .card-body > .btn,
+  .card-body form .btn {
+    display: block;
+    width: 100%;
+    margin: 0.5rem auto;
+  }
+
+  /* participant summary – grid na mobilu */
+  .participant-summary .card-body {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+  }
+  .participant-summary .card-body > div {
+    width: 100%;
+    margin: 0.25rem 0;
+  }
+}
+
+/* PARTICIPANT SUMMARY – desktop vs mobile */
+/* desktop (≥576px): doplň dvojtečku pomocí pseudo-elementu */
+@media (min-width: 576px) {
+  .participant-summary .summary-label::after {
+    content: ":";
+    margin-right: 0.5rem;
+  }
+}
+
+/* mobile (<576px): grid 2×2, bez dvojtečky */
+@media (max-width: 575.98px) {
+  .participant-summary .card-body {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    justify-items: center;
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    text-align: center;
+  }
+  .participant-summary .summary-item {
+    display: contents;
+  }
+  .participant-summary .summary-label::after {
+    content: none !important;
+  }
+  .participant-summary .summary-value {
+    display: block;
+    font-size: 1.25rem;
+    margin-top: 0.25rem;
+  }
+}
+
+/* odsazení sloupce “Poznámka” v tabulce registrací */
+.card-body.p-0 .table th[data-label="Poznámka"],
+.card-body.p-0 .table td[data-label="Poznámka"] {
+  padding-left: 0.25rem !important;
+}
+
+/* reflow tabulka – schovej Poznámku pod 600px */
+@media (max-width: 600px) {
+  .responsive-reflow th[data-label="Poznámka"],
+  .responsive-reflow td[data-label="Poznámka"] {
+    display: none !important;
+  }
+}
+
+/* tlačítka Zpět/Upravit pod sebe na mobilu */
+@media (max-width: 576px) {
+  .training-detail-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .training-detail-actions .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .training-detail-actions .btn:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ======================================================
+   Universální ikonové tlačítko — širší obdélník
+   ====================================================== */
+.icon-btn {
+  min-width: 60px;
+  height: 40px;
+  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+
+/* Na mobilních zařízeních (max-width: 767.98px) skryjeme note-col */
+@media (max-width: 767.98px) {
+  .note-col {
+    display: none;
+  }
+}
+
+
+.table-cervena td{
+  /* světle červené pozadí */
+ background-color: rgba(185, 3, 21, 0.2) !important;
+}
+
+.table-zelena td{
+  /* světle zelené pozadí */
+  background-color: rgba(25, 135, 84, 0.2) !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
