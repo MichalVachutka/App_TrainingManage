@@ -4,24 +4,15 @@ using TrainingManage.Api.Models.Training;
 
 namespace TrainingManage.Api.Controllers
 {
-
     /// <summary>
     /// API kontroler pro správu tréninků a získávání jejich detailních informací.
     /// </summary>
-    [ApiController]                  
+    [ApiController]
     [Route("api/trainings")]
     public class TrainingsController : ControllerBase
     {
-
-        /// <summary>
-        /// Správce tréninků poskytující operace pro CRUD a získávání detailů tréninků.
-        /// </summary>
         private readonly ITrainingManager trainingManager;
 
-        /// <summary>
-        /// Inicializuje instanci <see cref="TrainingsController"/> s implementací správce tréninků.
-        /// </summary>
-        /// <param name="trainingManager">Injektovaná implementace <see cref="ITrainingManager"/>.</param>
         public TrainingsController(ITrainingManager trainingManager)
         {
             this.trainingManager = trainingManager;
@@ -30,8 +21,7 @@ namespace TrainingManage.Api.Controllers
         /// <summary>
         /// Vrátí seznam všech tréninků.
         /// </summary>
-        /// <returns>Seznam <see cref="TrainingDto"/>.</returns>
-        [HttpGet]                     
+        [HttpGet]
         public ActionResult<IList<TrainingDto>> GetAll()
         {
             var trainingDtos = trainingManager.GetAllTrainings();
@@ -41,9 +31,7 @@ namespace TrainingManage.Api.Controllers
         /// <summary>
         /// Vrátí jeden trénink podle id.
         /// </summary>
-        /// <param name="id">Identifikátor tréninku.</param>
-        /// <returns><see cref="TrainingDto"/> pokud existuje, jinak 404 NotFound.</returns>
-        [HttpGet("{id}")]            
+        [HttpGet("{id}")]
         public ActionResult<TrainingDto> Get(int id)
         {
             var trainingDto = trainingManager.GetTraining(id);
@@ -53,9 +41,7 @@ namespace TrainingManage.Api.Controllers
         /// <summary>
         /// Vytvoří nový trénink.
         /// </summary>
-        /// <param name="trainingDto">Data tréninku k vytvoření.</param>
-        /// <returns>Vytvořený <see cref="TrainingDto"/> s odpovědí 201 Created a hlavičkou Location.</returns>
-        [HttpPost]                    
+        [HttpPost]
         public ActionResult<TrainingDto> Create([FromBody] TrainingDto dto)
         {
             if (!ModelState.IsValid)
@@ -68,12 +54,12 @@ namespace TrainingManage.Api.Controllers
         /// <summary>
         /// Aktualizuje existující trénink.
         /// </summary>
-        /// <param name="id">Identifikátor tréninku, který se má aktualizovat.</param>
-        /// <param name="trainingDto">Data pro aktualizaci tréninku.</param>
-        /// <returns>Aktualizovaný <see cref="TrainingDto"/> pokud aktualizace uspěje, jinak 404 NotFound.</returns>
-        [HttpPut("{id}")]             
+        [HttpPut("{id}")]
         public ActionResult<TrainingDto> Update(int id, [FromBody] TrainingDto trainingDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var updatedTrainingDto = trainingManager.UpdateTraining(id, trainingDto);
             return updatedTrainingDto is null ? NotFound() : Ok(updatedTrainingDto);
         }
@@ -81,27 +67,28 @@ namespace TrainingManage.Api.Controllers
         /// <summary>
         /// Smaže trénink podle ID.
         /// </summary>
-        /// <param name="id">Identifikátor tréninku, který se má smazat.</param>
-        /// <returns>204 NoContent při úspěšném smazání.</returns>
-        [HttpDelete("{id}")]          
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            trainingManager.DeleteTraining(id);
-            return NoContent();
+            try
+            {
+                trainingManager.DeleteTraining(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
         /// Vrátí detailní informace o tréninku podle id.
         /// </summary>
-        /// <param name="id">Identifikátor tréninku.</param>
-        /// <returns><see cref="TrainingDetailDto"/> pokud existuje, jinak 404 NotFound.</returns>
         [HttpGet("{id}/detail")]
         public ActionResult<TrainingDetailDto> GetDetail(int id)
         {
             var trainingDetailDto = trainingManager.GetTrainingDetail(id);
-            return trainingDetailDto is null
-                ? NotFound()
-                : Ok(trainingDetailDto);
+            return trainingDetailDto is null ? NotFound() : Ok(trainingDetailDto);
         }
     }
 }

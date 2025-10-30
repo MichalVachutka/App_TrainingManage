@@ -8,67 +8,69 @@ using TrainingManage.Data.Models;
 
 namespace TrainingManage.Api
 {
+    /// <summary>
+    /// Konfigurace AutoMapper mapování mezi entitami a DTO.
+    /// </summary>
     public class AutomapperConfigurationProfile : Profile
     {
         public AutomapperConfigurationProfile()
         {
+            // Person
             CreateMap<Person, PersonDto>();
             CreateMap<PersonDto, Person>();
 
-            CreateMap<Registration, RegistrationDto>()
-            .ForMember(d => d.TrainingTitle, opt => opt.MapFrom(r => r.Training.Title))
-            .ForMember(d => d.TrainingDate, opt => opt.MapFrom(r => r.Training.Date))
-            .ForMember(d => d.PersonName, opt => opt.MapFrom(r => r.Person.Name))
-            ;
+            // PersonDetail (obsahuje Person + Registrace)
             CreateMap<Person, PersonDetailDto>()
-                .ForMember(d => d.Person, opt => opt.MapFrom(src => src))      
+                .ForMember(d => d.Person, opt => opt.MapFrom(src => src))
                 .ForMember(d => d.Registrations, opt => opt.MapFrom(src => src.Registrations));
 
+            // Registration
+            // Mapujeme i názvy a datum tréninku a jméno osoby (pokud jsou navigace načteny)
+            CreateMap<Registration, RegistrationDto>()
+                .ForMember(d => d.TrainingTitle, opt => opt.MapFrom(r => r.Training != null ? r.Training.Title : null))
+                .ForMember(d => d.TrainingDate, opt => opt.MapFrom(r => r.Training != null ? r.Training.Date : default))
+                .ForMember(d => d.PersonName, opt => opt.MapFrom(r => r.Person != null ? r.Person.Name : null));
+
+            // DTO used to create Registration -> entity
+            CreateMap<RegistrationCreateDto, Registration>()
+                .ForMember(dest => dest.Payment, opt => opt.MapFrom(src => src.Payment));
+
+            // Training
             CreateMap<Training, TrainingDto>();
             CreateMap<TrainingDto, Training>();
 
-            // 1) Základní Expense → ExpenseDto (seznam)
+            // TrainingCreate DTO -> Training entity
+            CreateMap<TrainingCreateDto, Training>();
+
+            // Expense -> ExpenseDto (seznam)
             CreateMap<Expense, ExpenseDto>()
                 .ForMember(dest => dest.ParticipantShares,
                            opt => opt.MapFrom(src => src.Participants));
 
-            // 2) ExpenseParticipant → ParticipantShareDto (pokud ExpenseDto používá ParticipantShareDto)
+            // ExpenseParticipant -> ParticipantShareDto (zobrazení podílu)
             CreateMap<ExpenseParticipant, ParticipantShareDto>()
                 .ForMember(d => d.PersonId,
                            o => o.MapFrom(s => s.PersonId))
                 .ForMember(d => d.PersonName,
-                           o => o.MapFrom(s => s.Person.Name))
+                           o => o.MapFrom(s => s.Person != null ? s.Person.Name : null))
                 .ForMember(d => d.ShareAmount,
                            o => o.MapFrom(s => s.ShareAmount));
 
-            // 3) ExpenseParticipant → ExpenseParticipantDto 
+            // ExpenseParticipant -> ExpenseParticipantDto (detail)
             CreateMap<ExpenseParticipant, ExpenseParticipantDto>()
                 .ForMember(d => d.ExpenseId,
                            o => o.MapFrom(s => s.ExpenseId))
                 .ForMember(d => d.PersonId,
                            o => o.MapFrom(s => s.PersonId))
                 .ForMember(d => d.PersonName,
-                           o => o.MapFrom(s => s.Person.Name))
+                           o => o.MapFrom(s => s.Person != null ? s.Person.Name : null))
                 .ForMember(d => d.ShareAmount,
                            o => o.MapFrom(s => s.ShareAmount));
 
-            // 4) DTO pro vytváření → Expense
+            // DTO pro vytváření Expense -> Expense entity (nastavení data server-side)
             CreateMap<ExpenseCreateDto, Expense>()
                 .ForMember(dest => dest.Date,
                            opt => opt.MapFrom(_ => DateTime.UtcNow));
-
-            // Registrace
-            CreateMap<RegistrationCreateDto, Registration>()
-                .ForMember(dest => dest.Payment, opt => opt.MapFrom(src => src.Payment));
-
-            //CreateMap<Registration, RegistrationDto>();
-
-            // Transakce
-            //CreateMap<PersonTransaction, PersonTransactionDto>();
-     
-            CreateMap<TrainingCreateDto, Training>();
-
-
         }
     }
 }

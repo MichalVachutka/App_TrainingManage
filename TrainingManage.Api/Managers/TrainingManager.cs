@@ -1,119 +1,106 @@
-﻿using TrainingManage.Api.Interfaces;
+﻿using AutoMapper;
+using TrainingManage.Api.Interfaces;
+using TrainingManage.Api.Models.Registration;
+using TrainingManage.Api.Models.Training;
 using TrainingManage.Data.Interfaces;
 using TrainingManage.Data.Models;
-using AutoMapper;
-using TrainingManage.Data;
-using TrainingManage.Api.Models.Training;
-using TrainingManage.Api.Models.Registration;
-using Microsoft.EntityFrameworkCore;
 
 namespace TrainingManage.Api.Managers
 {
+    /// <summary>
+    /// Manager pro logiku nad entitou Training.
+    /// </summary>
     public class TrainingManager : ITrainingManager
     {
         private readonly ITrainingRepository trainingRepository;
-        private readonly TrainingDbContext trainingDbContext;
         private readonly IMapper mapper;
 
-    public TrainingManager(ITrainingRepository trainingRepository, TrainingDbContext trainingDbContext, IMapper mapper)
+        public TrainingManager(ITrainingRepository trainingRepository, IMapper mapper)
         {
-            this.trainingRepository = trainingRepository;        
-            this.trainingDbContext = trainingDbContext;
+            this.trainingRepository = trainingRepository;
             this.mapper = mapper;
         }
 
+        /// <summary>
+        /// Vrátí všechny tréninky.
+        /// </summary>
         public IList<TrainingDto> GetAllTrainings()
         {
-            var trainings = trainingRepository.GetAll();
-            return mapper.Map<IList<TrainingDto>>(trainings);
+            var trainingEntities = trainingRepository.GetAll();
+            return mapper.Map<IList<TrainingDto>>(trainingEntities);
         }
 
+        /// <summary>
+        /// Najde trénink podle id.
+        /// </summary>
         public TrainingDto? GetTraining(int id)
         {
-            var training = trainingRepository.FindById(id);
-            return training is null ? null : mapper.Map<TrainingDto>(training);
+            var trainingEntity = trainingRepository.FindById(id);
+            return trainingEntity is null ? null : mapper.Map<TrainingDto>(trainingEntity);
         }
 
+        /// <summary>
+        /// Vytvoří nový trénink.
+        /// </summary>
         public TrainingDto CreateTraining(TrainingDto trainingDto)
         {
-            var trainingEntity = mapper.Map<Training>(trainingDto);
-            trainingEntity.Id = default;
-            var created = trainingRepository.Insert(trainingEntity);
-            return mapper.Map<TrainingDto>(created);
+            var trainingToCreate = mapper.Map<Training>(trainingDto);
+            trainingToCreate.Id = default;
+            var createdTrainingEntity = trainingRepository.Insert(trainingToCreate);
+            return mapper.Map<TrainingDto>(createdTrainingEntity);
         }
 
-        public TrainingDto UpdateTraining(int id, TrainingDto dto)
+        /// <summary>
+        /// Aktualizuje existující trénink. Vrací null pokud entita neexistuje.
+        /// </summary>
+        public TrainingDto? UpdateTraining(int id, TrainingDto trainingDto)
         {
-            var entity = trainingRepository.FindById(id);
-            if (entity == null)
+            var existingTraining = trainingRepository.FindById(id);
+            if (existingTraining == null)
                 return null;
 
-            entity.Title = dto.Title;
-            entity.Date = dto.Date;
-            entity.Notes = dto.Notes;
+            existingTraining.Title = trainingDto.Title;
+            existingTraining.Date = trainingDto.Date;
+            existingTraining.Notes = trainingDto.Notes;
 
-            var updated = trainingRepository.Update(entity);
-
-            return mapper.Map<TrainingDto>(updated);
+            var updatedTrainingEntity = trainingRepository.Update(existingTraining);
+            return mapper.Map<TrainingDto>(updatedTrainingEntity);
         }
 
+        /// <summary>
+        /// Smaže trénink a související záznamy.
+        /// </summary>
         public void DeleteTraining(int id)
         {
-            var training = trainingDbContext.Trainings
-                .Include(t => t.Registrations)
-                .FirstOrDefault(t => t.Id == id)
-                ?? throw new KeyNotFoundException($"Training {id} not found");
-
-            var payTxs = trainingDbContext.PersonTransactions
-                .Where(t => t.Description == $"Trénink #{id}")
-                .ToList();
-            if (payTxs.Any())
-                trainingDbContext.PersonTransactions.RemoveRange(payTxs);
-
-            var rentTxs = trainingDbContext.PersonTransactions
-                .Where(t => t.Description == $"Rent share #{id}")
-                .ToList();
-            if (rentTxs.Any())
-                trainingDbContext.PersonTransactions.RemoveRange(rentTxs);
-
-            trainingDbContext.Registrations.RemoveRange(training.Registrations);
-
-            trainingDbContext.Trainings.Remove(training);
-
-            trainingDbContext.SaveChanges();
+            trainingRepository.DeleteWithDependencies(id);
         }
 
+        /// <summary>
+        /// Vrátí detail tréninku včetně registrací a (participant count, totals).
+        /// Vrací null pokud training neexistuje.
+        /// </summary>
         public TrainingDetailDto? GetTrainingDetail(int id)
         {
-
-            var trainingEntity = trainingDbContext.Trainings
-                .Include(t => t.Registrations)
-                    .ThenInclude(r => r.Person)
-                .FirstOrDefault(t => t.Id == id);
-
-            if (trainingEntity == null)
+            var trainingWithRegistrations = trainingRepository.GetWithRegistrationsAndPersons(id);
+            if (trainingWithRegistrations == null)
                 return null;
 
-            var trainingDto = mapper.Map<TrainingDto>(trainingEntity);
-
-            var registrationDtos = mapper
-                .Map<List<RegistrationDto>>(trainingEntity.Registrations);
+            var trainingDto = mapper.Map<TrainingDto>(trainingWithRegistrations);
+            var registrationDtos = mapper.Map<List<RegistrationDto>>(trainingWithRegistrations.Registrations ?? new List<Registration>());
 
             var participantCount = registrationDtos.Count;
             var totalCollected = registrationDtos.Sum(r => r.Payment);
 
-            var detailDto = new TrainingDetailDto
+            var trainingDetailDto = new TrainingDetailDto
             {
                 Training = trainingDto,
                 Registrations = registrationDtos,
                 ParticipantCount = participantCount,
                 TotalCollected = totalCollected,
-                RentCost = trainingEntity.RentCost
-
+                RentCost = trainingWithRegistrations.RentCost
             };
 
-            return detailDto;
+            return trainingDetailDto;
         }
     }
 }
-

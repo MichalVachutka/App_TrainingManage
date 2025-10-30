@@ -13,17 +13,17 @@ namespace TrainingManage.Api.Interfaces
         IList<TrainingDto> GetAllTrainings();
 
         /// <summary>
-        /// Vrátí trénink podle ID.
+        /// Vrátí trénink podle ID nebo null, pokud neexistuje.
         /// </summary>
         TrainingDto? GetTraining(int id);
 
         /// <summary>
-        /// Vytvoří nový trénink.
+        /// Vytvoří nový trénink a vrátí vytvořený DTO.
         /// </summary>
         TrainingDto CreateTraining(TrainingDto trainingDto);
 
         /// <summary>
-        /// Aktualizuje existující trénink podle ID.
+        /// Aktualizuje existující trénink podle ID, vrací aktualizovaný DTO nebo null, pokud neexistuje.
         /// </summary>
         TrainingDto? UpdateTraining(int id, TrainingDto trainingDto);
 
@@ -33,8 +33,8 @@ namespace TrainingManage.Api.Interfaces
         void DeleteTraining(int id);
 
         /// <summary>
-        /// Vrátí detail tréninku podle ID.
+        /// Vrátí detail tréninku (včetně registrací). Vrací null, pokud trénink neexistuje.
         /// </summary>
-        TrainingDetailDto GetTrainingDetail(int id);
+        TrainingDetailDto? GetTrainingDetail(int id);
     }
 }
